@@ -3,7 +3,6 @@ let baseUrl = "https://universities.hipolabs.com/search?country=";
 let btn = document.querySelector("button");
 let input = document.querySelector("input");
 
-// Button click
 btn.addEventListener("click", async () => {
     let country = input.value.trim().toLowerCase();
 
@@ -16,7 +15,6 @@ btn.addEventListener("click", async () => {
     show(colleges);
 });
 
-// Enter key support
 input.addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
         btn.click();
@@ -29,7 +27,7 @@ function show(colleges) {
 
     if (!colleges || colleges.length === 0) {
         let li = document.createElement("li");
-        li.innerText = "❌ No universities found. Try another country.";
+        li.innerText = "❌ No universities found.";
         list.appendChild(li);
         return;
     }
@@ -57,11 +55,15 @@ function show(colleges) {
 
 async function getcolleges(country) {
     try {
-        let url = baseUrl + country;
+        let url = baseUrl + country;   // ✅ correct URL
+        console.log("Fetching:", url);
+
         let res = await axios.get(url);
         return res.data;
+
     } catch (e) {
         console.log("error - ", e);
+        alert("API not working ❌");
         return [];
     }
 }
