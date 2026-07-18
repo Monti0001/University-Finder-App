@@ -19,12 +19,15 @@ for(col of colleges)
     list.appendChild(li);
 }
 }
-async function getcolleges(country){ try{
-    let res = await axios.get(url + country);
-    return res.data;
-}
-catch(e){
-    return [];
-    console.log('error - ',e);
-}
+async function getcolleges(country) {
+    try {
+        let url = `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl + country)}`;
+
+        let res = await axios.get(url);
+        return res.data;
+
+    } catch (e) {
+        console.log("error - ", e);
+        return [];
+    }
 }
