@@ -1,69 +1,30 @@
-let baseUrl = "https://universities.hipolabs.com/search?country=";
-
+let url = "http://universities.hipolabs.com/search?name=" ;
 let btn = document.querySelector("button");
-let input = document.querySelector("input");
-
-btn.addEventListener("click", async () => {
-    let country = input.value.trim().toLowerCase();
-
-    if (country === "") {
-        alert("Please enter a country name");
-        return;
-    }
-
-    let colleges = await getcolleges(country);
+btn.addEventListener("click" , async ()=>{
+    let country = document.querySelector("input").value ;
+    console.log(country);
+    let colleges = await  getcolleges(country);
     show(colleges);
-});
 
-input.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") {
-        btn.click();
-    }
-});
+})
 
-function show(colleges) {
+function show(colleges){
     let list = document.querySelector("#list");
-    list.innerText = "";
-
-    if (!colleges || colleges.length === 0) {
-        let li = document.createElement("li");
-        li.innerText = "❌ No universities found.";
-        list.appendChild(li);
-        return;
-    }
-
-    colleges.forEach(col => {
-        let li = document.createElement("li");
-
-        let name = document.createElement("strong");
-        name.innerText = col.name;
-
-        let br = document.createElement("br");
-
-        let link = document.createElement("a");
-        link.href = col.web_pages[0];
-        link.innerText = col.web_pages[0];
-        link.target = "_blank";
-
-        li.appendChild(name);
-        li.appendChild(br);
-        li.appendChild(link);
-
-        list.appendChild(li);
-    });
+    list.innerText = " ";
+for(col of colleges)
+{
+    console.log(col.name);
+    let li = document.createElement("li");
+    li.innerText = col.name;
+    list.appendChild(li);
 }
-
-async function getcolleges(country) {
-    try {
-        let url = baseUrl + country;   // ✅ correct URL
-        console.log("Fetching:", url);
-
-        let res = await axios.get(url);
-        return res.data;
-
-    } catch (e) {
-        console.log("error - ", e);
-        alert("API not working ❌");
-        return [];
-    }
+}
+async function getcolleges(country){ try{
+    let res = await axios.get(url + country);
+    return res.data;
+}
+catch(e){
+    return [];
+    console.log('error - ',e);
+}
 }
